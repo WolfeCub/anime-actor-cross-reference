@@ -1,3 +1,4 @@
+import sys
 import re
 import urllib2
 
@@ -8,8 +9,13 @@ def main():
 
     m = re.findall('<series_animedb_id>(\d*?)</series_animedb_id><series_title>(.*?)</series_title>', html)
 
+    total_watched = int(re.findall('<user_watching>(.*?)</user_watching>', html)[0]) + int(re.findall('<user_completed>(.*?)</user_completed>', html)[0]) +\
+            int(re.findall('<user_onhold>(.*?)</user_onhold>', html)[0]) + int(re.findall('<user_dropped>(.*?)</user_dropped>', html)[0]) +\
+            int(re.findall('<user_plantowatch>(.*?)</user_plantowatch>', html)[0])
+
     master = []
 
+    counter = 0
     for tup in m:
         url = 'http://myanimelist.net/anime/' + str(tup[0])
 
@@ -27,6 +33,10 @@ def main():
                 master.append(temp)
             else:
                 master[index].append(temp[1])
+        counter += 1
+        sys.stdout.write('\r')
+        sys.stdout.write(str(counter) + '/' + str(total_watched))
+        sys.stdout.flush()
 
     display(master)
 
