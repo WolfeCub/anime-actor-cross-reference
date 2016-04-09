@@ -7,11 +7,6 @@ from bs4 import BeautifulSoup
 
 def main():
     usr = input("MAL username: ")
-    v = input("Save File (y/n): ")
-    if v == 'y' or v == "Y":
-        v = input("Path to file: ")
-    else:
-        v = None
 
     r = requests.get('http://myanimelist.net/malappinfo.php?u=' + str(usr) + '&status=all&type=anime', headers={"user-agent": "iMAL-iOS"})
 
@@ -57,10 +52,12 @@ def main():
         sys.stdout.flush()
 
     sys.stdout.write('\r')
-    if v != None:
-        file = open(v, "w")
-        pprint.pprint(master, file)
-    else:
-        pprint.pprint(master)
+    display(master)
+
+def display(dict):
+    for key in dict:
+        print(key)
+        for j in dict[key]:
+            print('\t' + j[0] + ' - ' + j[1])
 
 if __name__ == "__main__": main()
