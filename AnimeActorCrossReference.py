@@ -39,6 +39,7 @@ def main():
         sys.stdout.write(str(counter) + '/' + str(total_watched))
         sys.stdout.flush()
 
+    sys.stdout.write('\r')
     display(master)
 
 def check(master, name):
