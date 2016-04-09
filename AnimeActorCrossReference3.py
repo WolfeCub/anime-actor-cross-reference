@@ -7,6 +7,12 @@ from bs4 import BeautifulSoup
 
 def main():
     usr = input("MAL username: ")
+    v = input("Save File (y/n): ")
+    if v == 'y' or v == "Y":
+        v = input("Path to file: ")
+    else:
+        v = None
+
     r = requests.get('http://myanimelist.net/malappinfo.php?u=' + str(usr) + '&status=all&type=anime', headers={"user-agent": "iMAL-iOS"})
 
     soup = BeautifulSoup(r.text, "lxml-xml")
@@ -51,6 +57,10 @@ def main():
         sys.stdout.flush()
 
     sys.stdout.write('\r')
-    pprint.pprint(master)
+    if v != None:
+        file = open(v, "w")
+        pprint.pprint(master, file)
+    else:
+        pprint.pprint(master)
 
 if __name__ == "__main__": main()
