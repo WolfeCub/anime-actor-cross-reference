@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/local/python2
 import sys
 import re
 import urllib2
