@@ -33,19 +33,19 @@ def main():
         soup = BeautifulSoup(r.text, "lxml")
         for k in soup.find_all('tr'):
             for j in k.children:
-                if j.name != None and j.a != None:
+                if j.name != None and j.a != None and j.a.contents != [] and j.small != None:
                     att = j.attrs
-                    if 'width' not in att and 'valign' in att and 'class' in att and att['valign'] == 'top':
+                    if 'width' not in att and 'valign' in att and att['valign'] == 'top':
                         if temp == None:
-                            if j.small.contents[0] == 'Main' or j.small.contents[0] == 'Supporting' or \
-                                    j.small.contents[0] == 'Japanese':
-                                        temp = j.a.contents[0]
+                            if j.small.contents[0] == 'Main' or j.small.contents[0] == 'Supporting':
+                                temp = j.a.contents[0]
                         else:
-                            if j.a.contents[0] in master:
-                                master[j.a.contents[0]].append((titles[i].string, temp))
-                            else:
-                                master[j.a.contents[0]] = [(titles[i].string, temp)]
-                            temp = None
+                            if j.small.contents[0] == 'Japanese':
+                                if j.a.contents[0] in master:
+                                    master[j.a.contents[0]].append((titles[i].string, temp))
+                                else:
+                                    master[j.a.contents[0]] = [(titles[i].string, temp)]
+                                temp = None
 
         counter += 1
         sys.stdout.write('\r')
@@ -61,11 +61,11 @@ def display(dict, f):
         for key in dict:
             print(key, file=f)
             for j in dict[key]:
-                print('\t' + j[0] + ' - ' + j[1], file=f)
+                print('    ' + j[0] + ' - ' + j[1], file=f)
     else:
         for key in dict:
             print(key, file=f)
             for j in dict[key]:
-                print('\t' + j[0] + ' - ' + j[1], file=f)
+                print('    ' + j[0] + ' - ' + j[1], file=f)
 
 if __name__ == "__main__": main()
