@@ -53,27 +53,37 @@ def main():
         sys.stdout.flush()
 
     sys.stdout.write('\r')
-    display(master, f)
+    display(master, f, titles, ids)
 
-def display(dict, f):
+def conv(bs4):
+    temp = []
+    for i in bs4:
+        temp.append(i.string)
+    return temp
+        
+    
+def display(dictionary, f, titles, ids):
     if f == 'y' or f == 'Y':
         f = open('voice_actor_cross_reference.txt', 'w')
-        for key in dict:
+        for key in dictionary:
             print(key, file=f)
-            for j in dict[key]:
+            for j in dictionary[key]:
                 print('    ' + j[0] + ' - ' + j[1], file=f)
-    if f == 'md':
+
+    elif f == 'md':
+        show_pairs = dict( zip(conv(titles), conv(ids)) )
         f = open('voice_actor_cross_reference.md', 'w')
         print('# Voice Actor Cross Reference\n', file=f)
-        for key in dict:
+        for key in dictionary:
             print("### " + key, file=f)
-            for j in dict[key]:
-                print('   * ' + j[0] + ' - ' + j[1], file=f)
+            for j in dictionary[key]:
+                print('   * [' + j[0] + '](' + "https://myanimelist.net/anime/" + show_pairs[j[0]] + ")" + ' - ' + j[1], file=f)
             print('', file=f)
+
     else:
-        for key in dict:
+        for key in dictionary:
             print(key, file=f)
-            for j in dict[key]:
+            for j in dictionary[key]:
                 print('    ' + j[0] + ' - ' + j[1], file=f)
 
 if __name__ == "__main__": main()
