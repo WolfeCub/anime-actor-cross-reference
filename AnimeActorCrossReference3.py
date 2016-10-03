@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 def main():
     usr = input("MAL username: ")
-    f = input("Save to file (y/n): ")
+    f = input("Save to file (y/n/md): ")
 
     r = requests.get('http://myanimelist.net/malappinfo.php?u=' + str(usr) + '&status=all&type=anime', headers={"user-agent": "iMAL-iOS"})
 
@@ -62,6 +62,14 @@ def display(dict, f):
             print(key, file=f)
             for j in dict[key]:
                 print('    ' + j[0] + ' - ' + j[1], file=f)
+    if f == 'md':
+        f = open('voice_actor_cross_reference.md', 'w')
+        print('# Voice Actor Cross Reference\n', file=f)
+        for key in dict:
+            print("### " + key, file=f)
+            for j in dict[key]:
+                print('   * ' + j[0] + ' - ' + j[1], file=f)
+            print('', file=f)
     else:
         for key in dict:
             print(key, file=f)
